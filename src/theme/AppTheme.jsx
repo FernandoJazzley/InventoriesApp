@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@emotion/react"
 import { CssBaseline } from "@mui/material"
-import { inventoriesTheme } from "./inventoriesTheme"
+import { inventoriesTheme } from "./"
 
 export const AppTheme = ({ children }) => {
     return (
