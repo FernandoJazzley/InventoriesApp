@@ -24,6 +24,10 @@ export const inventoriesTheme = createTheme({
         },
         error: {
             main:'#590F15'
-        }
+        },
+        button:{
+            main:'#0F4957'
+        },
+
     }
 })

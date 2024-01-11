@@ -1,21 +1,23 @@
-import { Grid , IconButton, Typography } from "@mui/material"
-import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+import { Button, Grid , IconButton, Link, Typography } from "@mui/material"
+import { Link as RouterLink } from 'react-router-dom';
+import CancelIcon from '@mui/icons-material/Cancel';
 import icono from '../../assets/iconoDemo.jpg'
 
-export const AuthLayout = () => {
+export const AuthLayout = ({ children , title = '', cancel, to='', link}) => {
 
     return (
         <Grid
         container
+        display='flex'
         spacing={0}
         justify= 'center'
+        alignContent='center'
         alignItems='center'
         sx={{ minHeight: '100vh', backgroundColor: 'background.main', padding: 10}}
         >
 
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid container display='contents' rowSpacing={0} columnSpacing={{ xs: 3, sm: 2, md: 0 }}>
             <Grid item xs={12} md={6}
-                    marginBottom={5}
                     textAlign='center'
                     justify= 'center'
                     alignItems='center'
@@ -28,57 +30,50 @@ export const AuthLayout = () => {
                 <Typography
                 textAlign="center"
                 sx={{ mb: 1 , fontSize: {lg: 20, sm: 15, xs: 12}}}
-                >{'title'}
+                >{title}
                 </Typography>
             </Grid>
 
-            <Grid item xs={12} md={6} className='background-image' sx={{ borderRadius: 8}}>
-            <div style={{position: 'relative', zIndex: 1 }}>
+            <Grid item xs={12} md={6} className='background-image-log' sx={{borderRadius: 4 }}>
+                <div style={{ position: 'relative', backgroundSize: 'cover', zIndex: 0 }} >
+                    <Grid container justifyContent="center">
+                            <Grid item>
+                            <img src={icono}  width= "70" height="70" className="logo"/>
+                            </Grid>
+                    </Grid>        
 
-             <Grid container
-                direction="column"
-                justifyContent="center"
-                alignContent="center"
-            >
-                <Grid item>
-                <img src={icono} width= "70" height="70" className="logo"/>
-                </Grid>
-            </Grid>           
-
-            <Grid item
-                sx={{
-                    marginRight: 2,
-                    marginBottom: 1,
-                    padding: 4, 
-                    border: 'solid', 
-                    borderWidth: 3, 
-                    borderColor: 'primary.main', 
-                    borderRadius: 4
-                }}
-            >
-        <Grid marginTop={-3}  marginLeft={-1}>
-          <IconButton
-            color='error'
-            edge='start'
-            size='large'
-            >
-            <KeyboardReturnIcon >
-
-            </KeyboardReturnIcon>
-            </IconButton>
-        </Grid> 
-           {/*  <Typography 
-            textAlign="center"
-            sx={{ fontWeight: 'bold', mb: 2, fontSize: { lg: 20, md: 15, xs: 13}}}
-            >¡Soy Sistemas Casa y soy profesional!
-            </Typography>
-            {'children'} */}
-            
+                    <Grid 
+                        sx={{
+                            zIndex: 1,
+                            margin: 5,
+                            padding: 7,
+                            border: 'solid', 
+                            borderWidth: 3, 
+                            borderColor: 'primary.main', 
+                            borderRadius: 4
+                        }}
+                    >
+                        <Grid container display={cancel} justifyContent="flex-end" marginTop={-7} marginLeft={7}>
+                            <IconButton color='black' edge='start' size='large'
+                                        LinkComponent={ RouterLink }
+                                        to={to}
+                            >
+                                <CancelIcon />
+                            </IconButton>
+                        </Grid> 
+                    {children}
+                    </Grid>
+                </div>    
+                <Grid container display={link} position='absolute' justifyContent="center" direction='row' sx={{ mb:3, mt:3 }}>  
+                    <Grid container direction='row' justifyContent="center" sx={{ mt:2 }}>
+                        <Link component={ RouterLink } color='primary' to='/auth/recovery' sx={{fontSize: { lg: 14, xs: 13}}}>
+                                ¿Olvidaste tu contraseña?
+                        </Link>
+                    </Grid>            
+                </Grid>    
+            </Grid>     
         </Grid>
-        </div>
-        </Grid> 
         </Grid>
-    </Grid>
   )
 }
 
