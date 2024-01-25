@@ -46,7 +46,7 @@
   }
 
   .character {
-    font-size: 20px;
+    font-size: 30px;
     border-radius: 50%;
     border-color: #0F4957;
    
@@ -65,7 +65,7 @@
   @media screen and (max-width: 1350px) {
 
     .character {
-      font-size: 40px;
+      font-size: 20px;
     }
   }
   
@@ -73,6 +73,6 @@
   @media screen and (max-width: 800px) {
   
     .character {
-      font-size: 30px;
+      font-size: 15px;
     }
   }

@@ -3,24 +3,19 @@ import { AuthLayout } from "../layout/AuthLayout"
 import { Zoom } from "react-reveal"
 import VerificationInput from "react-verification-input";
 
-const title = 'Se ha enviado un código de verificación al correo de la cuenta registrada'
+const title = 'Ingrese el código.'
 
 export const VerifyPage = () => {
   return (
     <AuthLayout title={title} to='/auth/recovery' link='none'>
-    <Typography
-          textAlign="center"
-          component='span'
-          padding={1}
-          sx={{ fontWeight: 'medium', fontSize: { lg: 20, md: 15, xs: 10}}}
-        >
+        <Typography textAlign='center' mb={2} sx={{fontSize: { lg: 16, md:14, sm:13, xs: 12}}}>
         <Zoom cascade>
-          Ingrese el código
+        Se ha enviado un código de verificación al correo de la cuenta registrada
         </Zoom>
       </Typography>
 
-      <Grid container direction='row' sx={{ mb: 1, mt: 1 }} >
-        <Grid item xs={ 12 } display="flex" justifyContent="center">
+      <Grid container direction='row'>
+        <Grid item xs={ 12 } mt={2} display="flex" justifyContent="center">
           <Zoom>
             <VerificationInput
             classNames={{

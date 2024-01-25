@@ -26,7 +26,7 @@ export const inventoriesTheme = createTheme({
             main:'#590F15'
         },
         button:{
-            main:'#0F4957'
+            main:'#CACACA'
         },
 
     }

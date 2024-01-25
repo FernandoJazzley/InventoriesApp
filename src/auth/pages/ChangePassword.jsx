@@ -100,15 +100,17 @@ export const ChangePassword = () => {
   return (
     <AuthLayout title={title} to='/auth/recovery' link='none'>
         <Grid container>
-        <Grid item xs={ 12 } sx={{ mt: 2 }}>
+        <Grid item xs={ 12 }>
         <FormControl 
             variant="standard" 
             fullWidth
             error ={ !!passwordValid && formSubmitted}
         >
             <InputLabel htmlFor="standard-adornment-password">
-                <Typography fontWeight='bold' variant='inherit'>
-                    Contraseña
+                <Typography
+                    sx={{ fontWeight: 'bold', fontSize: {md: 16, xs: 14 }}}
+                > 
+                Contraseña
                 </Typography>
             </InputLabel>
             <Input
@@ -155,8 +157,10 @@ export const ChangePassword = () => {
             error ={ verifyPassswordValid }
         >
             <InputLabel htmlFor="standard-adornment-password">
-                <Typography fontWeight='bold' variant='inherit'>
-                    Verifica contraseña
+                <Typography
+                    sx={{ fontWeight: 'bold', fontSize: {md: 16, xs: 14 }}}
+                > 
+                Verifica contraseña
                 </Typography>
             </InputLabel>
             <Input
@@ -180,13 +184,13 @@ export const ChangePassword = () => {
             </FormHelperText>
         </FormControl>
         </Grid>
-        <Grid container spacing={3} sx={{mb: 0, mt:1}}>
-                <Grid item xs={ 12 }>
+        <Grid container  justifyContent="center" sx={{mt:3 ,mb:-1}}>
+                <Grid item lg={7} md={8} sm={9} xs={10}>
                     <Button 
                         type='submit'
                         variant="contained" 
                         fullWidth
-                        sx={{fontSize: {lg: 15, xs: 10 }}}
+                        sx={{fontSize: {lg: 15, md:12, sm: 12, xs: 10 }}}
                         >
                         <Typography fontWeight='bold' variant='inherit'>
                             Cambiar contraseña

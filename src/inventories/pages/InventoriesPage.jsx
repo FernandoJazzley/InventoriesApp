@@ -25,7 +25,7 @@ export const InventoriesPage = () => {
         >
 
          
-        <Grid item  xs={12} md={10}  className='background-image-home' sx={{borderRadius: 4}}>
+        <Grid item  lg={9} md={12}  className='background-image-home' sx={{borderRadius: 4}}>
             <div style={{ position: 'relative', backgroundSize: 'cover', zIndex: 0 }} >
                 <Grid 
                     sx={{
@@ -60,13 +60,13 @@ export const InventoriesPage = () => {
             </div>   
         </Grid>  
 
-            <Grid item xs={10} md={8} lg={6}>
+            <Grid item lg={6} md={8}>
                       
                 <Grid
                     container
                     sx={{
-                        mt:3,
-                        padding: 6,
+                        mt:5,
+                        padding: 5,
                         border: 'solid', 
                         borderWidth: 3, 
                         borderColor: 'primary.main', 
@@ -74,15 +74,21 @@ export const InventoriesPage = () => {
 
                     }}
                 >
-                <Grid container spacing={5}>
-                    <Grid item xs={6} md={6} lg={6}>
+                <Grid container justifyContent={'center'} spacing={5}>
+                    <Grid item lg={5} md={5} xs={6}>
                         <Button 
-                            variant="outlined" 
-                            color="secondary"
+                            variant="contained" 
+                            color="button"
                             fullWidth
                             sx={{
                                 fontSize: {lg: 15, xs: 10 }, 
                                 mb:3,
+                                border: '1px solid #403C3D',
+                                '&:hover': {
+                                    border: '1px solid #0F4957',
+                                    backgroundColor: '#0F4957',   // Cambio de color de fondo al pasar el ratón
+                                    color: 'white',             // Cambio de color del texto al pasar el ratón
+                                },
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center', 
@@ -96,29 +102,42 @@ export const InventoriesPage = () => {
                             Usuarios
                             </Typography>
                         </Button>
-                        <Button
-                            variant="outlined" 
-                            color="secondary"
+                        <Button 
+                            variant='contained' 
+                            color='button'
                             fullWidth
                             sx={{
                                 fontSize: {lg: 15, xs: 10 }, 
                                 mb:3,
+                                border: '1px solid #403C3D',
+                                '&:hover': {
+                                    border: '1px solid #0F4957',
+                                    backgroundColor: '#0F4957',   // Cambio de color de fondo al pasar el ratón
+                                    color: 'white',             // Cambio de color del texto al pasar el ratón
+                                },
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center', 
                             }}
-                        >
-                            <LocalShippingIcon sx={{ fontSize: 20, mr: 1 }}/>
+                            >                    
+                            <Diversity1Icon sx={{ fontSize: 20, mr: 1 }}/>
                             <Typography fontWeight='bold' variant='inherit'>
-                            Provedores
+                            Clientes
                             </Typography>
-                        </Button><Button 
-                            variant="outlined" 
-                            color="secondary"
+                        </Button>
+                        <Button 
+                            variant='contained' 
+                            color='button'
                             fullWidth
                             sx={{
                                 fontSize: {lg: 15, xs: 10 }, 
                                 mb:3,
+                                border: '1px solid #403C3D',
+                                '&:hover': {
+                                    border: '1px solid #0F4957',
+                                    backgroundColor: '#0F4957',   // Cambio de color de fondo al pasar el ratón
+                                    color: 'white',             // Cambio de color del texto al pasar el ratón
+                                },
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center', 
@@ -130,35 +149,47 @@ export const InventoriesPage = () => {
                             </Typography>
                         </Button>
                     </Grid>
-                    <Grid item xs={6} md={6}>
-                    <Button 
-                        variant="outlined" 
-                        color="secondary"
-                        fullWidth
-                        sx={{
-                            fontSize: {lg: 15, xs: 10 }, 
-                            mb:3,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center', 
-                        }}
-                        >                    
-                        <Diversity1Icon sx={{ fontSize: 20, mr: 1 }}/>
+                    <Grid item  lg={5} md={5} xs={6}>
+                    <Button
+                        variant='contained' 
+                            color='button'
+                            fullWidth
+                            sx={{
+                                fontSize: {lg: 15, xs: 10 }, 
+                                mb:3,
+                                border: '1px solid #403C3D',
+                                '&:hover': {
+                                    border: '1px solid #0F4957',
+                                    backgroundColor: '#0F4957',   // Cambio de color de fondo al pasar el ratón
+                                    color: 'white',             // Cambio de color del texto al pasar el ratón
+                                },
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center', 
+                            }}
+                    >
+                        <LocalShippingIcon sx={{ fontSize: 20, mr: 1 }}/>
                         <Typography fontWeight='bold' variant='inherit'>
-                        Clientes
+                        Provedores
                         </Typography>
                     </Button>
                     <Button 
-                        variant="outlined" 
-                        color="secondary"
-                        fullWidth
-                        sx={{
-                            fontSize: {lg: 15, xs: 10 }, 
-                            mb:3,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center', 
-                        }}
+                        variant='contained' 
+                            color='button'
+                            fullWidth
+                            sx={{
+                                fontSize: {lg: 15, xs: 10 }, 
+                                mb:3,
+                                border: '1px solid #403C3D',
+                                '&:hover': {
+                                    border: '1px solid #0F4957',
+                                    backgroundColor: '#0F4957',   // Cambio de color de fondo al pasar el ratón
+                                    color: 'white',             // Cambio de color del texto al pasar el ratón
+                                },
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center', 
+                            }}
                         >
                         <Inventory2Icon sx={{ fontSize: 20, mr: 1 }}/>
                         <Typography fontWeight='bold' variant='inherit'>
@@ -166,16 +197,22 @@ export const InventoriesPage = () => {
                         </Typography>
                     </Button>
                     <Button 
-                        variant="outlined" 
-                        color="secondary"
-                        fullWidth
-                        sx={{
-                            fontSize: {lg: 15, xs: 10 }, 
-                            mb:3,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center', 
-                        }}
+                        variant='contained' 
+                            color='button'
+                            fullWidth
+                            sx={{
+                                fontSize: {lg: 15, xs: 10 }, 
+                                mb:3,
+                                border: '1px solid #403C3D',
+                                '&:hover': {
+                                    border: '1px solid #0F4957',
+                                    backgroundColor: '#0F4957',   // Cambio de color de fondo al pasar el ratón
+                                    color: 'white',             // Cambio de color del texto al pasar el ratón
+                                },
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center', 
+                            }}
                     >
                         <BarChartIcon sx={{ fontSize: 20, mr: 1 }}/>
                         <Typography fontWeight='bold' variant='inherit'>
@@ -187,14 +224,26 @@ export const InventoriesPage = () => {
                     <Grid container justifyContent='center'>
                         <Grid item xs={6} md={4}>
                             <Button 
-                                variant="outlined" 
-                                color="secondary"
+                                variant='contained' 
+                                color='button'
                                 fullWidth
-                                sx={{fontSize: {lg: 10, xs: 8 }}}
+                                sx={{
+                                    fontSize: {lg: 10, xs: 8 }, 
+                                    mb:-2,
+                                    border: '1px solid #403C3D',
+                                    '&:hover': {
+                                        border: '1px solid #0F4957',
+                                        backgroundColor: '#0F4957',   // Cambio de color de fondo al pasar el ratón
+                                        color: 'white',             // Cambio de color del texto al pasar el ratón
+                                    },
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center', 
+                                }}
                             >
-                                <Typography fontWeight='bold' variant='inherit'>
-                                Cerrar sesión
-                                </Typography>
+                            <Typography fontWeight='bold' variant='inherit'>
+                            Cerrar sesión
+                            </Typography>
                             </Button>
                         </Grid>
                     </Grid>

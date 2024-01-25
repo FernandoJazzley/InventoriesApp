@@ -75,14 +75,16 @@ export const LoginPage = () => {
     <form onSubmit={ loginSubmit }>
           <Grid >
 
-          <Grid item xs={12} sx={{ mt: 0 }}>
+          <Grid item xs={12}>
             <FormControl variant='standard' fullWidth>
               <InputLabel htmlFor='username'>
-                <Typography fontWeight='bold' variant='inherit'>
+                <Typography 
+                  sx={{ fontWeight: 'bold', fontSize: {md: 16, xs: 14 }}}
+                >
                   Nombre de usuario
                 </Typography>
               </InputLabel>
-              <Input type='text' name='email' value={email} onChange={onLoginInputChange} />
+              <Input type='text' name='email' value={email} onChange={onLoginInputChange}/>
             </FormControl>
           </Grid>
 
@@ -93,12 +95,11 @@ export const LoginPage = () => {
                 select
                 variant="standard"
                 label="Sucursal"
-                fontWeight='bold'
                 fullWidth
                 id="sucursal"
                 InputLabelProps={{
-                  style: { fontWeight: 'bold' },
-                }}
+                  sx:{ fontWeight: 'bold', fontSize: {md: 16, xs: 14 }}}
+                }
               >
                 {currencies.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -112,7 +113,9 @@ export const LoginPage = () => {
             <Grid item xs={ 12 } sx={{ mt: 1}}>
               <FormControl variant='standard' fullWidth>
                 <InputLabel htmlFor="standard-adornment-password">
-                  <Typography fontWeight='bold' variant='inherit'>
+                  <Typography 
+                    sx={{ fontWeight: 'bold', fontSize: {md: 16, xs: 14 }}}
+                    >
                     Contraseña
                   </Typography>
                 </InputLabel>
@@ -139,13 +142,13 @@ export const LoginPage = () => {
         <EmojtCha onSelect={setIsValidationPassed} />
       </div> */}
           </Grid>
-          <Grid container justifyContent="center" spacing={1} sx={{mb: -2, mt:3}}>
-            <Grid item xs={ 7 }>
+          <Grid container justifyContent="center" sx={{mb: -1, mt:5}}>
+            <Grid item lg={7} md={8} sm={7} xs={8}>
                 <Button 
                 variant="contained" 
                 color="primary"
                 fullWidth
-                sx={{fontSize: {lg: 15, xs: 10 }}}
+                sx={{fontSize: {lg: 15, md:12, sm: 12, xs: 10 }}}
                 >
                 <Typography fontWeight='bold' variant='inherit'>
                   Iniciar sesión

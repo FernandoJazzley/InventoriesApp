@@ -44,23 +44,28 @@ export const RecoveryPage = () => {
     <AuthLayout title='Recuperar cuenta' to='/auth/login' link='none'>
         <form  onSubmit={recoverySubmit}>
         <Grid>
-            <Grid item xs={12} sx={{ mt: 0 }}>
+            <Grid item xs={12}>
+                <Typography textAlign='center' sx={{fontWeight: 'bold', fontSize: { lg: 16, md:14, sm:13, xs: 12}}}>
+                  Introduce tu correo electrónico para buscar tu cuenta.
+                </Typography>
                 <FormControl variant='standard' fullWidth>
                     <InputLabel htmlFor='username'>
-                    <Typography fontWeight='bold' variant='inherit'>
-                        Introduce tu nombre de usuario para recuperar tu cuenta
+                    <Typography
+                      sx={{ fontWeight: 'bold', fontSize: {md: 15, xs: 12}}}
+                      >
+                        Correo electrónico.
                     </Typography>
                     </InputLabel>
                     <Input type='text' name='email' value={email} onChange={onRecoveryInputChange} />
                 </FormControl>
             </Grid>
             <Grid container justifyContent="center" spacing={1} sx={{mb: -2, mt:3}}>
-            <Grid item xs={ 7 }>
+            <Grid item lg={7} md={8} sm={7} xs={9}>
                 <Button
                 variant="contained" 
                 color="primary"
                 fullWidth
-                sx={{fontSize: {lg: 15, xs: 10 }}}
+                sx={{fontSize: {lg: 15, md:12, sm: 12, xs: 10 }}}
                 >
                 <Typography fontWeight='bold' variant='inherit'>
                   Buscar cuenta

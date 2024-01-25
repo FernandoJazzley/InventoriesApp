@@ -59,7 +59,7 @@ export const InventoriesLayout = () => {
       justify='center'
       alignContent='center'
       alignItems='center'
-      sx={{ minHeight: '100vh', backgroundColor: 'background.main', padding: 1 }}
+      sx={{ minHeight: '100vh', backgroundColor: 'background.main', padding: 2 }}
     >
       <Grid container direction="column" >
         {/* Encabezado con el nombre del módulo y menú hamburguesa */}
@@ -79,10 +79,10 @@ export const InventoriesLayout = () => {
               justifyContent='center'
               justifyItems='center' 
               variant="h4" 
-              fontWeight='bold' 
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1 , fontWeight: 'bold', fontSize: {lg: 30, md:25, xs: 20 }}}
+
             >
-            <PersonIcon sx={{ fontSize: 30 ,mr:2 }} />
+            <PersonIcon sx={{ fontSize: {lg: 35, md:30, sm:25, xs: 20 } ,mr:2 }} />
               Usuarios
             </Typography>
           </Toolbar>
@@ -129,7 +129,15 @@ export const InventoriesLayout = () => {
         </Grid>
 
         {/* Navegación y lista de información */}
-        <Grid container spacing={2} sx={{ padding: 2, alignItems: 'center' }}>
+        <Grid container spacing={3}  
+        sx={{ 
+          padding: '10px', // Aplica el padding en general
+          '@media (max-width: 600px)': {
+            padding: '0', // Quita el padding en pantallas más pequeñas que 600px
+          },
+          alignItems: 'center',
+        }}
+        >
           <Grid item xs={12} sm={9}>
             <Scrollbars style={{ height: '65vh' }}>
               <Grid
@@ -139,33 +147,43 @@ export const InventoriesLayout = () => {
                 justify='center'
                 alignContent='center'
                 alignItems='center'
-                sx={{ minHeight: '100vh', backgroundColor: 'rgba(64, 60, 61, 0.7)', padding: 3 }}
-              >
+                sx={{  backgroundColor: 'rgba(64, 60, 61, 0.7)', 
+                  padding: '20px', 
+                  '@media (max-width: 600px)': {
+                    padding: '10px',
+                  }
+                }}
+                >
                 {data.map((item) => (
-                  <Grid item key={item.id} mb={2} xs={12}>
+                  <Grid item key={item.id} sx={{ mb:{lg:2, md:2, sm:2, xs:1}}}>
                     <Card sx={{ width: '100%', height: '100%' }}>
                       <CardContent
                         sx={{
                           height: '100%',
                           display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
                           alignItems: 'center',
                         }}
                       >
                         <div>
-                          <Typography variant="h6" component="div" mr={10}>
+                          <Typography 
+                            variant="h4"
+                            mb={1} 
+                            sx={{fontWeight: 'bold', fontSize: {lg:23, md:20, xs:16}}}
+                          >
                             {item.title}
                           </Typography>
-                          <Typography color="textSecondary" mr={5}>
+                          <Typography 
+                            color="textSecondary" 
+                            sx={{mr:{lg:5, md:5, xs:1 }, fontSize: {lg:20, md:15, xs:12}}}
+                            >
                             {item.description}
                           </Typography>
                         </div>
                         <div sx={{ display: 'flex', alignItems: 'center' }}>
-                          <Avatar alt="Avatar" src="/path/to/avatar.jpg" sx={{ width: 56, height: 56 }} />
+                          <Avatar alt="Avatar" src="/path/to/avatar.jpg" sx={{ width: {lg:56, md:40 }, height: {lg:56, md:40} }} />
                         </div>
                         <div>
-                          <IconButton onClick={handleMenuClick} sx={{ mr: 2 }}>
+                          <IconButton onClick={handleMenuClick} sx={{ mr: {lg:2, md:2 , xs:-2} }}>
                             <MoreVertIcon />
                           </IconButton>
                           <Menu
@@ -186,7 +204,7 @@ export const InventoriesLayout = () => {
             </Scrollbars>
           </Grid>
 
-          <Grid item xs={12} sm={3}>
+          <Grid  item xs={12} sm={3}>
             {/* Botonera de navegación de módulos */}
             <Button variant="outlined" fullWidth>
               Módulo 1
@@ -199,21 +217,19 @@ export const InventoriesLayout = () => {
             </Button>
             {/* Agrega más botones de navegación según sea necesario */}
           </Grid>
-
-          <Grid item xs={12} mt={2} sx={{ display: 'flex', justifyContent: 'space-between'}}>
-            {/* Pie de página */}
-            <Typography variant="body2" color="textSecondary" textAlign='center'>
-              VERSION 1.1
-            </Typography>
-            <Typography variant="body2" color="textSecondary" textAlign='center'>
-              © 2024 Tu Compañía. Todos los derechos reservados.
-            </Typography>
-            <Typography variant="body2" color="textSecondary" textAlign='center'>
-              {formattedTime}
-            </Typography>
-          </Grid>
-
         </Grid>
+      </Grid>
+      <Grid item xs={12} mt={2} sx={{ display: 'flex', justifyContent: 'space-between'}}>
+          {/* Pie de página */}
+          <Typography variant="body2" color="textSecondary" textAlign='center'>
+            VERSION 1.0
+          </Typography>
+          <Typography variant="body2" color="textSecondary" textAlign='center'>
+            © 2024 Tu Compañía. Todos los derechos reservados.
+          </Typography>
+          <Typography variant="body2" color="textSecondary" textAlign='center'>
+            {formattedTime}
+          </Typography>
       </Grid>
     </Grid>
   )
