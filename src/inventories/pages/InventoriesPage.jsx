@@ -94,7 +94,7 @@ export const InventoriesPage = () => {
                                 justifyContent: 'center', 
                             }}
                             onClick={
-                                () => navigate('/users')
+                                () => navigate('/usuarios')
                             }
                         >
                             <PersonIcon sx={{ fontSize: 20, mr: 1 }} />
@@ -119,7 +119,10 @@ export const InventoriesPage = () => {
                                 alignItems: 'center',
                                 justifyContent: 'center', 
                             }}
-                            >                    
+                            onClick={
+                                () => navigate('/clientes')
+                            }
+                        >                    
                             <Diversity1Icon sx={{ fontSize: 20, mr: 1 }}/>
                             <Typography fontWeight='bold' variant='inherit'>
                             Clientes
@@ -142,6 +145,9 @@ export const InventoriesPage = () => {
                                 alignItems: 'center',
                                 justifyContent: 'center', 
                             }}
+                            onClick={
+                                () => navigate('/pedidos')
+                            }
                         >
                             <ShoppingCartIcon sx={{ fontSize: 20, mr: 1 }}/>
                             <Typography fontWeight='bold' variant='inherit'>
@@ -167,6 +173,9 @@ export const InventoriesPage = () => {
                                 alignItems: 'center',
                                 justifyContent: 'center', 
                             }}
+                            onClick={
+                                () => navigate('/provedores')
+                            }
                     >
                         <LocalShippingIcon sx={{ fontSize: 20, mr: 1 }}/>
                         <Typography fontWeight='bold' variant='inherit'>
@@ -190,6 +199,9 @@ export const InventoriesPage = () => {
                                 alignItems: 'center',
                                 justifyContent: 'center', 
                             }}
+                            onClick={
+                                () => navigate('/productos')
+                            }
                         >
                         <Inventory2Icon sx={{ fontSize: 20, mr: 1 }}/>
                         <Typography fontWeight='bold' variant='inherit'>
@@ -213,6 +225,9 @@ export const InventoriesPage = () => {
                                 alignItems: 'center',
                                 justifyContent: 'center', 
                             }}
+                            onClick={
+                                () => navigate('/reportes')
+                            }
                     >
                         <BarChartIcon sx={{ fontSize: 20, mr: 1 }}/>
                         <Typography fontWeight='bold' variant='inherit'>
@@ -240,6 +255,9 @@ export const InventoriesPage = () => {
                                     alignItems: 'center',
                                     justifyContent: 'center', 
                                 }}
+                                onClick={
+                                () => navigate('/auth/login')
+                            }
                             >
                             <Typography fontWeight='bold' variant='inherit'>
                             Cerrar sesión

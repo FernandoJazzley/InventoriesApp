@@ -1,236 +1,210 @@
-import { useEffect, useState } from 'react';
-import { Grid, AppBar, Toolbar, Typography, Button, IconButton, InputBase, Paper, Card, CardContent, Avatar, Menu, MenuItem, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
+import { useState } from 'react';
+import { Grid, AppBar, Toolbar, Typography, IconButton, InputBase, Paper, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import ListItemButton from '@mui/material/ListItemButton';
+import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Scrollbars from 'react-custom-scrollbars';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import EditIcon from '@mui/icons-material/Edit';
+import PersonIcon from '@mui/icons-material/Person';
 
-const data = [
-  { id: 1, title: 'Nombre completo del usuario 1', description: 'Descripción del elemento 1, con la información que se va a traer del usuario que se trae de la base de datos de prueba' },
-  { id: 2, title: 'Nombre completo del usuario 2', description: 'Descripción del elemento 1, con la información que se va a traer del usuario que se trae de la base de datos de prueba' },
-  { id: 3, title: 'Nombre completo del usuario 3', description: 'Descripción del elemento 1, con la información que se va a traer del usuario que se trae de la base de datos de prueba' },
-  { id: 4, title: 'Nombre completo del usuario 4', description: 'Descripción del elemento 1, con la información que se va a traer del usuario que se trae de la base de datos de prueba' },
-  { id: 5, title: 'Nombre completo del usuario 5', description: 'Descripción del elemento 1, con la información que se va a traer del usuario que se trae de la base de datos de prueba' },
-];
 
-export const InventoriesLayout = () => {
+const drawerWidth = 240;
+
+export const InventoriesLayout = ({children, window, title} ) => {
 
   const [currentTime, setCurrentTime] = useState(new Date());
-
-  useEffect(() => {
-    // Esta función se ejecutará después de que el componente se monte
-    const intervalId = setInterval(() => {
-      // Actualiza el estado con la hora actual
-      setCurrentTime(new Date());
-    }, 1000); // Actualiza cada segundo
-
-    // Esta función se ejecutará antes de que el componente se desmonte
-    return () => {
-      clearInterval(intervalId); // Limpia el intervalo cuando el componente se desmonta
-    };
-  }, []); // El array vacío asegura que useEffect se ejecute solo después del montaje inicial
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   const formattedTime = currentTime.toLocaleTimeString();
+  const [appBarOpacity, setAppBarOpacity] = useState(1);
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
+
+  const handleDrawerClose = () => {
+    setIsClosing(true);
+    setMobileOpen(false);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const handleDrawerTransitionEnd = () => {
+    setIsClosing(false);
   };
 
-  const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen);
+  const handleDrawerToggle = () => {
+    if (!isClosing) {
+      setMobileOpen(!mobileOpen);
+    }
   };
+
+  const drawer = (
+    <div>
+      <Toolbar />
+      <Divider />
+      <List>
+        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  );
+
+  // Remove this const when copying and pasting into your project.
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Grid
-      container
-      display='flex'
-      spacing={0}
-      justify='center'
-      alignContent='center'
-      alignItems='center'
-      sx={{ minHeight: '100vh', backgroundColor: 'background.main', padding: 2 }}
-    >
-      <Grid container direction="column" >
-        {/* Encabezado con el nombre del módulo y menú hamburguesa */}
-        <AppBar position="static" color="transparent" elevation={1} className="custom-bar">
-          <Toolbar borderRadius={4}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={toggleDrawer}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography 
-              color='primary' 
-              textAlign='center' 
-              justifyContent='center'
-              justifyItems='center' 
-              variant="h4" 
-              sx={{ flexGrow: 1 , fontWeight: 'bold', fontSize: {lg: 30, md:25, xs: 20 }}}
 
-            >
-            <PersonIcon sx={{ fontSize: {lg: 35, md:30, sm:25, xs: 20 } ,mr:2 }} />
-              Usuarios
-            </Typography>
-          </Toolbar>
-        </AppBar>
+    <Box display='flex' spacing={0} justify='center' alignContent='center' alignItems='center'
+      sx={{  minHeight: '100vh', backgroundColor: 'background.main'}}
+      >
+      <CssBaseline />
 
-        {/* Menú lateral (Drawer) */}
-        <Drawer anchor='left' open={drawerOpen} onClose={toggleDrawer}>
-          <List>
-            <ListItem button>
-              <ListItemIcon>
-                <AccountCircleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Perfil" />
-            </ListItem>
-            {/* Agrega más elementos de menú según sea necesario */}
-          </List>
-        </Drawer>
-
-       {/* Sección de acciones y buscador */}
-        <Grid container spacing={0} sx={{ padding: 2, alignItems: 'center', justifyContent: 'space-evenly' }}>
-          <Grid item xs={4} sm={2} borderRadius={4} className="custom-bar" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-            {/* Acciones */}
-            <IconButton sx={{ mr: 5 , color:'green'}}>
-              <PersonAddIcon />
-            </IconButton>
-            <IconButton sx={{ color: 'cadetblue'}}>
-              <EditIcon />
-            </IconButton>
-            {/* Agrega más botones según sea necesario */}
-          </Grid>
-          <Grid item xs={8} sm={7} borderRadius={4} className="custom-bar">
-            {/* Buscador */}
-            <Paper component="form" sx={{ p: '2px 20px', display: 'flex', alignItems: 'center', width: '100%', backgroundColor: 'transparent', borderRadius: 4 }}>
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="Buscar..."
-                inputProps={{ 'aria-label': 'buscar' }}
-              />
-              <IconButton type="submit" sx={{ p: '7px' }} aria-label="buscar">
-                <SearchIcon />
-              </IconButton>
-            </Paper>
-          </Grid>
-        </Grid>
-
-        {/* Navegación y lista de información */}
-        <Grid container spacing={3}  
-        sx={{ 
-          padding: '10px', // Aplica el padding en general
-          '@media (max-width: 600px)': {
-            padding: '0', // Quita el padding en pantallas más pequeñas que 600px
-          },
-          alignItems: 'center',
+      {/* Sección del Encabezado con el nombre del módulo y menú hamburguesa */}
+      <AppBar position="fixed" elevation={20} className="custom-bar"
+        sx={{
+          zIndex: 1201,
+          width: { md: `calc(100% - ${drawerWidth}px)` },
+          ml: { md: `${drawerWidth}px` },
+          background: `rgba(205, 205, 205, ${appBarOpacity})`, // Ajusta la opacidad aquí
+          transition: 'background 0.5s',
         }}
         >
-          <Grid item xs={12} sm={9}>
-            <Scrollbars style={{ height: '65vh' }}>
-              <Grid
-                container
-                direction="column"
-                display='flex'
-                justify='center'
-                alignContent='center'
-                alignItems='center'
-                sx={{  backgroundColor: 'rgba(64, 60, 61, 0.7)', 
-                  padding: '20px', 
-                  '@media (max-width: 600px)': {
-                    padding: '10px',
-                  }
-                }}
-                >
-                {data.map((item) => (
-                  <Grid item key={item.id} sx={{ mb:{lg:2, md:2, sm:2, xs:1}}}>
-                    <Card sx={{ width: '100%', height: '100%' }}>
-                      <CardContent
-                        sx={{
-                          height: '100%',
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <div>
-                          <Typography 
-                            variant="h4"
-                            mb={1} 
-                            sx={{fontWeight: 'bold', fontSize: {lg:23, md:20, xs:16}}}
-                          >
-                            {item.title}
-                          </Typography>
-                          <Typography 
-                            color="textSecondary" 
-                            sx={{mr:{lg:5, md:5, xs:1 }, fontSize: {lg:20, md:15, xs:12}}}
-                            >
-                            {item.description}
-                          </Typography>
-                        </div>
-                        <div sx={{ display: 'flex', alignItems: 'center' }}>
-                          <Avatar alt="Avatar" src="/path/to/avatar.jpg" sx={{ width: {lg:56, md:40 }, height: {lg:56, md:40} }} />
-                        </div>
-                        <div>
-                          <IconButton onClick={handleMenuClick} sx={{ mr: {lg:2, md:2 , xs:-2} }}>
-                            <MoreVertIcon />
-                          </IconButton>
-                          <Menu
-                            anchorEl={anchorEl}
-                            open={Boolean(anchorEl)}
-                            onClose={handleMenuClose}
-                          >
-                            <MenuItem onClick={handleMenuClose}>Opción 1</MenuItem>
-                            <MenuItem onClick={handleMenuClose}>Opción 2</MenuItem>
-                            <MenuItem onClick={handleMenuClose}>Opción 3</MenuItem>
-                          </Menu>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            </Scrollbars>
-          </Grid>
+        <Toolbar borderRadius={4}>
+          <IconButton color="inherit" aria-label="open drawer" edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { md: 'none' } }}
+          >
+            <MenuIcon />
+              </IconButton>
+            <Typography color='primary' textAlign='center' justifyContent='center' justifyItems='center' variant="h4" 
+              sx={{ flexGrow: 1 , fontWeight: 'bold', fontSize: {lg: 30, md:25, xs: 20 }}}
+            >
+            <PersonIcon sx={{ fontSize: {lg: 35, md:30, sm:25, xs: 20 } ,mr:2 }} />
+              {title}
+            </Typography>
+        </Toolbar>
+      </AppBar>
 
-          <Grid  item xs={12} sm={3}>
-            {/* Botonera de navegación de módulos */}
-            <Button variant="outlined" fullWidth>
-              Módulo 1
-            </Button>
-            <Button variant="outlined" fullWidth>
-              Módulo 2
-            </Button>
-            <Button variant="outlined" fullWidth>
-              Módulo 3
-            </Button>
-            {/* Agrega más botones de navegación según sea necesario */}
-          </Grid>
+
+      <Box component="nav"
+        sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+        aria-label="mailbox folders"
+      >
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onTransitionEnd={handleDrawerTransitionEnd}
+          onClose={handleDrawerClose}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', md: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', md: 'block' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - ${drawerWidth}px)` } }}
+      >
+      <Toolbar />
+
+      {/* Sección de acciones y buscador */}
+      <Grid container sx={{ alignItems: 'center', justifyContent: 'space-evenly' }}>
+        <Grid item xs={4} sm={2} borderRadius={4} className="custom-bar" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+          {/* Acciones */}
+          <IconButton sx={{ mr: 5 , color:'green'}}>
+            <PersonAddIcon />
+          </IconButton>
+          <IconButton sx={{ color: 'cadetblue'}}>
+            <EditIcon />
+          </IconButton>
+          {/* Agrega más botones según sea necesario */}
+        </Grid>
+        <Grid item xs={8} sm={7} borderRadius={4} className="custom-bar">
+          {/* Buscador */}
+          <Paper component="form" sx={{ p: '2px 20px', display: 'flex', alignItems: 'center', width: '100%', backgroundColor: 'transparent', borderRadius: 4 }}>
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder="Buscar..."
+              inputProps={{ 'aria-label': 'buscar' }}
+            />
+            <IconButton type="submit" sx={{ p: '7px' }} aria-label="buscar">
+              <SearchIcon />
+            </IconButton>
+          </Paper>
         </Grid>
       </Grid>
-      <Grid item xs={12} mt={2} sx={{ display: 'flex', justifyContent: 'space-between'}}>
-          {/* Pie de página */}
-          <Typography variant="body2" color="textSecondary" textAlign='center'>
-            VERSION 1.0
-          </Typography>
-          <Typography variant="body2" color="textSecondary" textAlign='center'>
-            © 2024 Tu Compañía. Todos los derechos reservados.
-          </Typography>
-          <Typography variant="body2" color="textSecondary" textAlign='center'>
-            {formattedTime}
-          </Typography>
+        
+      {/* Contenido por página*/}
+      {children}  
+      
+      {/*Grid del fotter */}
+      <Grid container>
+        <Grid item xs={12} mt={{lg:1, md: 1, sm: 2, xs:2}} sx={{ display: 'flex', justifyContent: 'space-between'}}>
+            {/* Pie de página */}
+            <Typography variant="body2" color="textSecondary" textAlign='center'>
+              VERSION 1.0
+            </Typography>
+            <Typography variant="body2" color="textSecondary" textAlign='center'>
+              © 2024 Tu Compañía. Todos los derechos reservados.
+            </Typography>
+            <Typography variant="body2" color="textSecondary" textAlign='center'>
+              {formattedTime}
+            </Typography>
+        </Grid>
       </Grid>
-    </Grid>
-  )
+        
+      </Box>
+    </Box>
+  );
 }
+
+InventoriesLayout.propTypes = {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * Remove this when copying and pasting into your project.
+   */
+  window: PropTypes.func,
+};
+
