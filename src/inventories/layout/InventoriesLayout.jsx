@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Grid, AppBar, Toolbar, Typography, IconButton, InputBase, Paper, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Grid, AppBar, Toolbar, Typography, IconButton, InputBase, Paper, Drawer, List, ListItem, ListItemIcon, ListItemText, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -41,17 +41,19 @@ export const InventoriesLayout = ({children, window, title} ) => {
       setMobileOpen(!mobileOpen);
     }
   };
-
+  
   const drawer = (
     <div>
       <Toolbar />
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        {['Usuarios', 'Clientes', 'Pedidos', 'Proveedores', 'Productos', 'Reportes'].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton sx={{ borderRadius: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <div style={{ width: '50px', height: '50px', borderRadius: '50%', border: 'solid', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  {index % 2 === 0 ? <InboxIcon style={{ fontSize: '40px' }} /> : <MailIcon style={{ fontSize: '40px' }} />}
+                </div>
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
@@ -59,20 +61,18 @@ export const InventoriesLayout = ({children, window, title} ) => {
         ))}
       </List>
       <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+      <List sx={{ marginTop: 'auto', alignContent: 'flex-end' }}>
+        <ListItem disablePadding sx={{ borderRadius: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Button variant='contained' color='button'>
+            <Typography>
+              Cerrar sesión
+            </Typography>
+          </Button>
+        </ListItem>
       </List>
     </div>
   );
+  
 
   // Remove this const when copying and pasting into your project.
   const container = window !== undefined ? () => window().document.body : undefined;
@@ -136,7 +136,11 @@ export const InventoriesLayout = ({children, window, title} ) => {
           variant="permanent"
           sx={{
             display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': { 
+              boxSizing: 'border-box',
+               width: drawerWidth, 
+               backgroundColor: 'rgba(15, 73, 87, 0.6)', // Cambia el color de fondo según tus necesidades
+              },
           }}
           open
         >

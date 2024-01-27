@@ -47,7 +47,7 @@ export const UsersPage = () => {
                     justify='center'
                     alignContent='center'
                     alignItems='center'
-                    sx={{  backgroundColor: 'rgba(64, 60, 61, 0.7)', 
+                    sx={{  backgroundColor: 'rgba(64, 64, 64, 0.6)', 
                       padding: '20px', 
                       '@media (max-width: 600px)': {
                         padding: '10px',
