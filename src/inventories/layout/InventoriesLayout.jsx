@@ -1,30 +1,30 @@
 import { useState } from 'react';
-import { Grid, AppBar, Toolbar, Typography, IconButton, InputBase, Paper, Drawer, List, ListItem, ListItemIcon, ListItemText, Button } from '@mui/material';
+import { Grid, AppBar, Toolbar, Typography, IconButton, InputBase, Paper, Drawer } from '@mui/material';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import ListItemButton from '@mui/material/ListItemButton';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import EditIcon from '@mui/icons-material/Edit';
 import PersonIcon from '@mui/icons-material/Person';
+import { useEffect } from 'react';
+import { Botonera, FormAdd } from '../components';
 
+const drawerWidth = 200;
 
-const drawerWidth = 240;
+export const InventoriesLayout = ({children, window, title, searchText, onSearchChange, selectedCard} ) => {
 
-export const InventoriesLayout = ({children, window, title} ) => {
-
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime] = useState(new Date());
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [appBarOpacity] = useState(1);
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  const formattedTime = currentTime.toLocaleTimeString();
-  const [appBarOpacity, setAppBarOpacity] = useState(1);
 
+  const handleSearch = (e) => {
+    onSearchChange(e); // Asegúrate de pasar el evento al onSearchChange
+  };
 
 
   const handleDrawerClose = () => {
@@ -41,37 +41,29 @@ export const InventoriesLayout = ({children, window, title} ) => {
       setMobileOpen(!mobileOpen);
     }
   };
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  useEffect(() => {
+    // You can perform additional actions when searchText changes, if needed
+  }, [searchText]);
+
+  const handleEditButtonClick = () => {
+    // Realiza acciones específicas para editar la tarjeta seleccionada
+    if (selectedCard) {
+      console.log("Editar tarjeta:", selectedCard);
+      // Aquí puedes abrir el formulario de edición o realizar otras acciones
+    }
+  };
+
+  const formattedTime = currentTime.toLocaleTimeString();
   
-  const drawer = (
-    <div>
-      <Toolbar />
-      <Divider />
-      <List>
-        {['Usuarios', 'Clientes', 'Pedidos', 'Proveedores', 'Productos', 'Reportes'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton sx={{ borderRadius: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <ListItemIcon>
-                <div style={{ width: '50px', height: '50px', borderRadius: '50%', border: 'solid', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  {index % 2 === 0 ? <InboxIcon style={{ fontSize: '40px' }} /> : <MailIcon style={{ fontSize: '40px' }} />}
-                </div>
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List sx={{ marginTop: 'auto', alignContent: 'flex-end' }}>
-        <ListItem disablePadding sx={{ borderRadius: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Button variant='contained' color='button'>
-            <Typography>
-              Cerrar sesión
-            </Typography>
-          </Button>
-        </ListItem>
-      </List>
-    </div>
-  );
   
 
   // Remove this const when copying and pasting into your project.
@@ -85,30 +77,47 @@ export const InventoriesLayout = ({children, window, title} ) => {
       <CssBaseline />
 
       {/* Sección del Encabezado con el nombre del módulo y menú hamburguesa */}
-      <AppBar position="fixed" elevation={20} className="custom-bar"
-        sx={{
-          zIndex: 1201,
-          width: { md: `calc(100% - ${drawerWidth}px)` },
-          ml: { md: `${drawerWidth}px` },
-          background: `rgba(205, 205, 205, ${appBarOpacity})`, // Ajusta la opacidad aquí
-          transition: 'background 0.5s',
-        }}
-        >
-        <Toolbar borderRadius={4}>
-          <IconButton color="inherit" aria-label="open drawer" edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}
-          >
-            <MenuIcon />
-              </IconButton>
-            <Typography color='primary' textAlign='center' justifyContent='center' justifyItems='center' variant="h4" 
-              sx={{ flexGrow: 1 , fontWeight: 'bold', fontSize: {lg: 30, md:25, xs: 20 }}}
-            >
-            <PersonIcon sx={{ fontSize: {lg: 35, md:30, sm:25, xs: 20 } ,mr:2 }} />
-              {title}
-            </Typography>
-        </Toolbar>
-      </AppBar>
+      <AppBar
+  position="fixed"
+  elevation={20}
+  className="custom-bar"
+  sx={{
+    zIndex: 1201,
+    width: { md: `calc(100% - ${drawerWidth}px)` },
+    ml: { md: `${drawerWidth}px` },
+    background: `rgba(205, 205, 205, ${appBarOpacity})`,
+    transition: 'background 0.5s',
+  }}
+>
+  <Toolbar borderRadius={4}>
+    <IconButton
+      color="primary"
+      aria-label="open drawer"
+      edge="start"
+      onClick={handleDrawerToggle}
+      sx={{ mr: 2, display: { md: 'none' } }}
+    >
+      <MenuIcon />
+    </IconButton>
+    <Typography
+      color="primary"
+      textAlign="center"
+      justifyContent="center"
+      justifyItems="center"
+      variant="h4"
+      sx={{
+        flexGrow: 1,
+        fontWeight: 'bold',
+        fontSize: { lg: 30, md: 25, xs: 20 },
+        display: 'flex',
+        alignItems: 'center', // Alinea el texto e icono verticalmente
+      }}
+    >
+      <PersonIcon sx={{ fontSize: { lg: 35, md: 30, sm: 25, xs: 20 }, mr: 2 }} />
+      {title}
+    </Typography>
+  </Toolbar>
+</AppBar>
 
 
       <Box component="nav"
@@ -127,10 +136,16 @@ export const InventoriesLayout = ({children, window, title} ) => {
           }}
           sx={{
             display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': { 
+              boxSizing: 'border-box', 
+              width: drawerWidth,
+              background: '#CACACA',
+            },
           }}
         >
-          {drawer}
+          <div style={{ backgroundColor: 'rgba(15, 73, 87, 0.6)', padding: '20px' }}>
+          <Botonera/>
+          </div>
         </Drawer>
         <Drawer
           variant="permanent"
@@ -144,7 +159,7 @@ export const InventoriesLayout = ({children, window, title} ) => {
           }}
           open
         >
-          {drawer}
+          <Botonera/>
         </Drawer>
       </Box>
       <Box
@@ -157,21 +172,25 @@ export const InventoriesLayout = ({children, window, title} ) => {
       <Grid container sx={{ alignItems: 'center', justifyContent: 'space-evenly' }}>
         <Grid item xs={4} sm={2} borderRadius={4} className="custom-bar" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
           {/* Acciones */}
-          <IconButton sx={{ mr: 5 , color:'green'}}>
+          <IconButton sx={{ mr: 5 , color:'green'}} onClick={openModal}>
             <PersonAddIcon />
           </IconButton>
-          <IconButton sx={{ color: 'cadetblue'}}>
+          <FormAdd open={isModalOpen} handleClose={closeModal} />
+          <IconButton sx={{ color: 'cadetblue'}} onClick={handleEditButtonClick}>
             <EditIcon />
           </IconButton>
           {/* Agrega más botones según sea necesario */}
         </Grid>
         <Grid item xs={8} sm={7} borderRadius={4} className="custom-bar">
           {/* Buscador */}
-          <Paper component="form" sx={{ p: '2px 20px', display: 'flex', alignItems: 'center', width: '100%', backgroundColor: 'transparent', borderRadius: 4 }}>
+          <Paper component="form" 
+            sx={{ p: '2px 20px', display: 'flex', alignItems: 'center', width: '100%', backgroundColor: 'transparent', borderRadius: 4 }}>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
               placeholder="Buscar..."
               inputProps={{ 'aria-label': 'buscar' }}
+              value={searchText}
+              onChange={handleSearch}
             />
             <IconButton type="submit" sx={{ p: '7px' }} aria-label="buscar">
               <SearchIcon />
@@ -179,10 +198,10 @@ export const InventoriesLayout = ({children, window, title} ) => {
           </Paper>
         </Grid>
       </Grid>
-        
       {/* Contenido por página*/}
       {children}  
-      
+
+
       {/*Grid del fotter */}
       <Grid container>
         <Grid item xs={12} mt={{lg:1, md: 1, sm: 2, xs:2}} sx={{ display: 'flex', justifyContent: 'space-between'}}>
@@ -205,10 +224,10 @@ export const InventoriesLayout = ({children, window, title} ) => {
 }
 
 InventoriesLayout.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * Remove this when copying and pasting into your project.
-   */
   window: PropTypes.func,
+  title: PropTypes.string.isRequired,
+  searchText: PropTypes.string.isRequired,
+  onSearchChange: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 };
 

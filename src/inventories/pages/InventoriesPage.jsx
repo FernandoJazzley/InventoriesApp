@@ -179,7 +179,7 @@ export const InventoriesPage = () => {
                     >
                         <LocalShippingIcon sx={{ fontSize: 20, mr: 1 }}/>
                         <Typography fontWeight='bold' variant='inherit'>
-                        Provedores
+                        Proveedores
                         </Typography>
                     </Button>
                     <Button 

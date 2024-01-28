@@ -14,7 +14,7 @@ export const InventoriesRoutes = () => {
         <Route path='/usuarios' element={ <UsersPage/>}/>
         <Route path='/clientes' element={ <ClientsPage/>}/>
         <Route path='/pedidos' element={ <OrdersPage/>}/>
-        <Route path='/provedores' element={ <SuppliersPage/>}/>
+        <Route path='/proveedores' element={ <SuppliersPage/>}/>
         <Route path='/productos' element={ <ProductPage/>}/>
         <Route path='/reportes' element={ <ReportsPage/>}/>
 
