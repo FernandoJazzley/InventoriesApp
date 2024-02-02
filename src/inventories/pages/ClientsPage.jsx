@@ -8,7 +8,7 @@ import {
 } from '@mui/x-data-grid-premium';
 import { useDemoData } from '@mui/x-data-grid-generator';
 import { Grid } from "@mui/material";
-import Scrollbars from 'react-custom-scrollbars';
+import { People } from "@mui/icons-material";
 
 export const ClientsPage = () => {
 
@@ -52,7 +52,7 @@ export const ClientsPage = () => {
   });
 
   return (
-    <InventoriesLayout title='Clientes'>
+    <InventoriesLayout title='Clientes' icon={<People /> }>
     <Grid container spacing={3} sx={{ padding: '10px', alignItems: 'center' }}>
           <Grid item xs={12} sm={12}>
             <Grid

@@ -4,6 +4,8 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import Scrollbars from 'react-custom-scrollbars';
+import { Store } from "@mui/icons-material";
+
 
 const itemData = [
   {
@@ -70,7 +72,7 @@ const itemData = [
 
 export const ProductPage = () => {
   return (
-    <InventoriesLayout title='Productos'>
+    <InventoriesLayout title='Productos' icon={<Store/>}>
     <Grid container>
         <Grid container spacing={3} sx={{ padding: '10px', alignItems: 'center' }}>
           <Grid item xs={12} sm={12}>

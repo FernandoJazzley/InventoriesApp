@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Grid, AppBar, Toolbar, Typography, IconButton, InputBase, Paper, Drawer } from '@mui/material';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
@@ -7,13 +7,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import EditIcon from '@mui/icons-material/Edit';
-import PersonIcon from '@mui/icons-material/Person';
 import { useEffect } from 'react';
 import { Botonera, FormAdd } from '../components';
 
 const drawerWidth = 200;
 
-export const InventoriesLayout = ({children, window, title, searchText, onSearchChange, selectedCard} ) => {
+export const InventoriesLayout = ({children, window, title, searchText, onSearchChange, selectedCard, icon} ) => {
 
   const [currentTime] = useState(new Date());
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -51,7 +50,6 @@ export const InventoriesLayout = ({children, window, title, searchText, onSearch
   };
 
   useEffect(() => {
-    // You can perform additional actions when searchText changes, if needed
   }, [searchText]);
 
   const handleEditButtonClick = () => {
@@ -64,9 +62,6 @@ export const InventoriesLayout = ({children, window, title, searchText, onSearch
 
   const formattedTime = currentTime.toLocaleTimeString();
   
-  
-
-  // Remove this const when copying and pasting into your project.
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
@@ -78,53 +73,52 @@ export const InventoriesLayout = ({children, window, title, searchText, onSearch
 
       {/* Sección del Encabezado con el nombre del módulo y menú hamburguesa */}
       <AppBar
-  position="fixed"
-  elevation={20}
-  className="custom-bar"
-  sx={{
-    zIndex: 1201,
-    width: { md: `calc(100% - ${drawerWidth}px)` },
-    ml: { md: `${drawerWidth}px` },
-    background: `rgba(205, 205, 205, ${appBarOpacity})`,
-    transition: 'background 0.5s',
-  }}
->
-  <Toolbar borderRadius={4}>
-    <IconButton
-      color="primary"
-      aria-label="open drawer"
-      edge="start"
-      onClick={handleDrawerToggle}
-      sx={{ mr: 2, display: { md: 'none' } }}
-    >
-      <MenuIcon />
-    </IconButton>
-    <Typography
-      color="primary"
-      textAlign="center"
-      justifyContent="center"
-      justifyItems="center"
-      variant="h4"
-      sx={{
-        flexGrow: 1,
-        fontWeight: 'bold',
-        fontSize: { lg: 30, md: 25, xs: 20 },
-        display: 'flex',
-        alignItems: 'center', // Alinea el texto e icono verticalmente
-      }}
-    >
-      <PersonIcon sx={{ fontSize: { lg: 35, md: 30, sm: 25, xs: 20 }, mr: 2 }} />
-      {title}
-    </Typography>
-  </Toolbar>
-</AppBar>
+        position="fixed"
+        elevation={20}
+        className="custom-bar"
+        sx={{
+          zIndex: 1201,
+          width: { md: `calc(100% - ${drawerWidth}px)` },
+          ml: { md: `${drawerWidth}px` },
+          background: `rgba(205, 205, 205, ${appBarOpacity})`,
+          transition: 'background 0.5s',
+        }}
+      >
+        <Toolbar borderRadius={4}>
+          <IconButton
+            color="primary"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { md: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            color="primary"
+            textAlign="center"
+            justifyContent="center"
+            justifyItems="center"
+            variant="h4"
+            sx={{
+              flexGrow: 1,
+              fontWeight: 'bold',
+              fontSize: { lg: 30, md: 25, xs: 20 },
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            {icon && React.cloneElement(icon, { sx: { fontSize: { lg: 35, md: 30, sm: 25, xs: 20 }, mr: 2 } })}
+            {title}
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
 
       <Box component="nav"
         sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
@@ -132,7 +126,7 @@ export const InventoriesLayout = ({children, window, title, searchText, onSearch
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', md: 'none' },
@@ -154,7 +148,7 @@ export const InventoriesLayout = ({children, window, title, searchText, onSearch
             '& .MuiDrawer-paper': { 
               boxSizing: 'border-box',
                width: drawerWidth, 
-               backgroundColor: 'rgba(15, 73, 87, 0.6)', // Cambia el color de fondo según tus necesidades
+               backgroundColor: 'rgba(15, 73, 87, 0.6)',
               },
           }}
           open
@@ -167,8 +161,6 @@ export const InventoriesLayout = ({children, window, title, searchText, onSearch
         sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - ${drawerWidth}px)` } }}
       >
       <Toolbar />
-
-      {/* Sección de acciones y buscador */}
       <Grid container sx={{ alignItems: 'center', justifyContent: 'space-evenly' }}>
         <Grid item xs={4} sm={2} borderRadius={4} className="custom-bar" sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
           {/* Acciones */}
@@ -179,7 +171,6 @@ export const InventoriesLayout = ({children, window, title, searchText, onSearch
           <IconButton sx={{ color: 'cadetblue'}} onClick={handleEditButtonClick}>
             <EditIcon />
           </IconButton>
-          {/* Agrega más botones según sea necesario */}
         </Grid>
         <Grid item xs={8} sm={7} borderRadius={4} className="custom-bar">
           {/* Buscador */}
@@ -198,9 +189,9 @@ export const InventoriesLayout = ({children, window, title, searchText, onSearch
           </Paper>
         </Grid>
       </Grid>
+
       {/* Contenido por página*/}
       {children}  
-
 
       {/*Grid del fotter */}
       <Grid container>

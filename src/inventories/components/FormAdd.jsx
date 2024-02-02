@@ -2,11 +2,17 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
-import {FormControl, FormControlLabel, FormLabel, Grid, Input, InputAdornment, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material';
+import { FormControl, FormControlLabel, FormLabel, Grid, Input, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import inventoriesApi from '../../api/inventoriesApi';
+import dayjs from 'dayjs';
+import 'dayjs/locale/es'; // Importa el idioma español para Day.js
+
+dayjs.locale('es'); // Establece el idioma español en Day.js
+
 
 const style = {
   position: 'absolute',
@@ -21,22 +27,81 @@ const style = {
 };
 
 export const FormAdd = ({ open, handleClose }) => {
+  const [formData, setFormData] = useState({
+    complete_name: '',
+    age: '',
+    sex: '',
+    birthdate: null,
+    branch: '',
+    working_hours: '',
+    description: '',
+  });
+
   const [selectedImage, setSelectedImage] = useState(null);
-  const [sucursal, setSucursal] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState('');
+  const [selectedWorkingHours, setSelectedWorkingHours] = useState('');
 
   const handleChange = (event) => {
-    setSucursal(event.target.value);
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-
+  
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setSelectedImage(file);
+    }
+  };
+
+  const handleDateChange = (date) => {
+    setFormData({
+      ...formData,
+      birthdate: date,
+    });
+  };
+
+  const handleBranchChange = (event) => {
+    setSelectedBranch(event.target.value);
+    setFormData({
+      ...formData,
+      branch: event.target.value,
+    });
+  };
+
+  const handleWorkingHoursChange = (event) => {
+    setSelectedWorkingHours(event.target.value);
+    setFormData({
+      ...formData,
+      working_hours: event.target.value,
+    });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formDataToSend = new FormData();
+    formDataToSend.append('profileImage', selectedImage);
+    formDataToSend.append('complete_name', formData.complete_name);
+    formDataToSend.append('age', formData.age);
+    formDataToSend.append('sex', formData.sex);
+    formDataToSend.append('birthdate', formData.birthdate ? formData.birthdate.toISOString() : null);
+    formDataToSend.append('branch', formData.branch);
+    formDataToSend.append('working_hours', formData.working_hours);
+    formDataToSend.append('description', formData.description);
+
+    try {
+
+      const response = await inventoriesApi.post('/inventories/addUser/', formDataToSend, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // Importante: indica que estás enviando un formulario con archivos
+      },
+    });
+      console.log('Respuesta del servidor:', response.data);
+      handleClose();
+    } catch (error) {
+      console.error('Error al enviar la solicitud:', error);
     }
   };
 
@@ -48,40 +113,39 @@ export const FormAdd = ({ open, handleClose }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         BackdropProps={{
-          onClick: (event) => event.stopPropagation(), // Evita el cierre al clic en la capa de fondo
+          onClick: (event) => event.stopPropagation(),
           style: { backgroundColor: 'rgba(0, 0, 0, 0.5)' }
         }}
       >
         <Box sx={style}>
-            <Typography variant="h5" align="center" gutterBottom>
-              Agregar usuario
-            </Typography>
-          <form>
+          <Typography variant="h5" align="center" gutterBottom>
+            Agregar usuario
+          </Typography>
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
             <Grid>
-            <Grid container item xs={12} justifyContent='center'>
-              <label htmlFor="image-upload" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <Button variant="contained" component="span">
-                  Cargar Foto
-                </Button>
-                {selectedImage && (
-                  <Avatar alt="Avatar" src={selectedImage} sx={{ width: 100, height: 100, marginTop: '8px' }} />
-                )}
-              </label>
-              <Input
-                type="file"
-                accept="image/*"
-                id="image-upload"
-                onChange={handleFileChange}
-                style={{ display: 'none' }}
-              />
-            </Grid>
+              <Grid container item xs={12} justifyContent='center'>
+                <label htmlFor="image-upload" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                  <Button variant="contained" component="span">
+                    Cargar Foto
+                  </Button>
+                  <Avatar alt="Avatar" src={selectedImage ? URL.createObjectURL(selectedImage) : ''} sx={{ width: 100, height: 100, marginTop: '8px' }} />
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    id="image-upload"
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                  />
+                </label>
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant="standard"
                   label="Nombre completo"
                   type="text"
                   fullWidth
-                  name="complete_name_user"
+                  name="complete_name"
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid container mt={2}>
@@ -91,7 +155,8 @@ export const FormAdd = ({ open, handleClose }) => {
                     label='Edad'
                     type='number'
                     fullWidth
-                    name='Edad'
+                    name='age'
+                    onChange={handleChange}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -100,9 +165,10 @@ export const FormAdd = ({ open, handleClose }) => {
                     <RadioGroup
                       row
                       aria-label="position"
-                      name="position"
+                      name="sex"
                       defaultValue="top"
                       style={{ justifyContent: 'center' }}
+                      onChange={handleChange}
                     >
                       <FormControlLabel
                         value="Hombre"
@@ -120,48 +186,50 @@ export const FormAdd = ({ open, handleClose }) => {
                   </FormControl>
                 </Grid>
               </Grid>
-              <Grid container > 
-              <Grid item xs={12}>
-              <InputLabel id="demo-simple-select-label">Fecha de nacimiento</InputLabel>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker />
-                </LocalizationProvider>
+              <Grid container >
+                <Grid item xs={12}>
+                  <InputLabel id="demo-simple-select-label">Fecha de nacimiento</InputLabel>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker onChange={handleDateChange} />
+                  </LocalizationProvider>
                 </Grid>
               </Grid>
               <Grid container mt={4} justifyContent={'space-between'}>
                 <Grid item xs={5.8}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Sucursal</InputLabel>
-                  <Select
-                  variant='standard'
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={sucursal}
-                    label='Sucursal'
-                    onChange={handleChange}
-                  >
-                    <MenuItem value={10}>Sucural 1</MenuItem>
-                    <MenuItem value={20}>Sucursal 2</MenuItem>
-                    <MenuItem value={30}>Suursal 3</MenuItem>
-                  </Select>
-                </FormControl>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Sucursal</InputLabel>
+                    <Select
+                      variant='standard'
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={selectedBranch}
+                      label='Sucursal'
+                      onChange={handleBranchChange}
+                      name="branch"
+                    >
+                      <MenuItem value={'Sucursal 1'}>Sucursal 1</MenuItem>
+                      <MenuItem value={'Sucursal 2'}>Sucursal 2</MenuItem>
+                      <MenuItem value={'Sucursal 3'}>Sucursal 3</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
                 <Grid item xs={5.8}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Horario laboral</InputLabel>
-                  <Select
-                  variant='standard'
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={sucursal}
-                    label='Sucursal'
-                    onChange={handleChange}
-                  >
-                    <MenuItem value={10}>Matutino</MenuItem>
-                    <MenuItem value={20}>Vespertino</MenuItem>
-                    <MenuItem value={30}>Nocturno</MenuItem>
-                  </Select>
-                </FormControl>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Horario laboral</InputLabel>
+                    <Select
+                      variant='standard'
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={selectedWorkingHours}
+                      label='Horario laboral'
+                      onChange={handleWorkingHoursChange}
+                      name="working_hours"
+                    >
+                      <MenuItem value={'Matutino'}>Matutino</MenuItem>
+                      <MenuItem value={'Vespertino'}>Vespertino</MenuItem>
+                      <MenuItem value={'Nocturno'}>Nocturno</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
               </Grid>
               <Grid container mt={4}>
@@ -173,6 +241,8 @@ export const FormAdd = ({ open, handleClose }) => {
                     multiline
                     fullWidth
                     rows={2}
+                    name="description"
+                    onChange={handleChange}
                   />
                 </Grid>
               </Grid>

@@ -5,6 +5,8 @@ import { styled } from '@mui/material/styles';
 import Scrollbars from 'react-custom-scrollbars';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { Grid } from "@mui/material";
+import { ListAlt } from "@mui/icons-material";
+
 
 const uData = [4000, 3000, 2000, 2780, 1890, 2390, 3490];
 const pData = [2400, 1398, 9800, 3908, 4800, 3800, 4300];
@@ -53,7 +55,7 @@ function PieCenterLabel({ children }) {
 
 export const ReportsPage = () => {
   return (
-    <InventoriesLayout title='Reportes'>
+    <InventoriesLayout title='Reportes' icon={<ListAlt/>}>
        <Grid container>
         <Grid container spacing={3} sx={{ padding: '10px', alignItems: 'center' }}>
           <Grid item xs={12} sm={12}>
