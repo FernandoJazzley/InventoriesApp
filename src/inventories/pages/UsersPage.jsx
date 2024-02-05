@@ -1,14 +1,16 @@
-import { InventoriesLayout } from "../layout/InventoriesLayout"
+import React, { useState } from 'react';
+import { InventoriesLayout } from "../layout/InventoriesLayout";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Avatar, Button, Card, CardContent, Grid, IconButton, ListItemIcon, Menu, MenuItem, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Avatar, Button, Card, CardContent, Grid, IconButton, ListItemIcon, Menu, MenuItem, Typography, Dialog, DialogTitle, DialogContent } from "@mui/material";
+import { useEffect } from "react";
 import Scrollbars from 'react-custom-scrollbars';
 import styled from 'styled-components';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import inventoriesApi from '../../api/inventoriesApi'
-import image from '../../assets/usersImages/perfil.png'
+import image from '../../assets/usersImages/perfil.png';
 import { AccountCircle } from "@mui/icons-material";
+import Swal from 'sweetalert2';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -59,23 +61,33 @@ export const UsersPage = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [userData, setUserData] = useState([]);
   const [expandedCardId, setExpandedCardId] = useState(null);
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [selectedPopupData, setSelectedPopupData] = useState(null);
 
   useEffect (() => {
-
     const fetchData = async () => {
       try {
         const {data} = await inventoriesApi.get('/inventories/users/');
-       console.log(data)
-        console.log(data.users);
         setUserData(data.users);
       } catch (error) {
-        console.log(error)
         console.error('Error al obtener datos de la base de datos:', error);
       }
     };
 
     fetchData();
   }, []); 
+
+  const updateUsersList = async () => {
+    try {
+      const { data } = await inventoriesApi.get('/inventories/users/');
+      const updatedUsers = data.users;
+
+    // Invertir el orden de la lista de usuarios
+    setUserData(updatedUsers.reverse());
+    } catch (error) {
+      console.error('Error al obtener datos de la base de datos:', error);
+    }
+  };
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -108,14 +120,82 @@ export const UsersPage = () => {
     return expandedCardId === cardId;
   };
 
-  function formatDate(dateString) {
+  const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
     return formattedDate;
-  }
+  };
+
+  const openPopup = (cardData) => {
+    setPopupOpen(true);
+    setSelectedPopupData(cardData);
+  };
+
+  const closePopup = () => {
+    setPopupOpen(false);
+    setSelectedPopupData(null);
+  };
+
+  const handleViewClick = () => {
+    openPopup(selectedCard);
+    handleMenuClose();
+  };
+
+  const handleDeleteClick = async () => {
+    try {
+      if (!selectedCard) {
+        // No se ha seleccionado ninguna tarjeta para eliminar
+        return;
+      }
+      handleMenuClose();
+  
+      await Swal.fire({
+        html: `¿Está seguro de eliminar el usuario?<br/><br/><b>${selectedCard.complete_name}</b>`,
+        icon: 'question',
+        showCancelButton: true,
+        iconColor: "#F05313",
+        background: '#AAB7B8',
+        confirmButtonColor: 'green',
+        color: 'black',
+        confirmButtonText: 'Confirmar',
+        cancelButtonColor: '#590F15',
+        cancelButtonText: 'Cancelar'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const userIdToDelete = selectedCard.id;  
+            // Realizar la solicitud de eliminación
+            const response = await inventoriesApi.delete(`/inventories/deleteUser/${userIdToDelete}`);
+            if (response.data.ok) {
+              // La eliminación fue exitosa, puedes realizar cualquier acción adicional si es necesario
+              const updatedData = await inventoriesApi.get('/inventories/users/');
+              setUserData(updatedData.data.users);
+              setSelectedCard(null);
+              Swal.fire({
+                text: 'Usuario eliminado exitosamnete',
+                iconColor: "#D35400",
+                confirmButtonColor: "green",                color: 'black',
+                background: '#AAB7B8',
+                customClass: {
+                  container: 'custom-swal-container', // Clase personalizada para ajustar el z-index
+                },
+              });
+            } else {
+              // Hubo un problema con la eliminación, puedes manejar el error aquí
+              console.error('Error al eliminar el usuario:', response.data.msg);
+            }
+          } catch (error) {
+            console.error('Error al eliminar el usuario:', error);
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Error al procesar la solicitud de eliminación:', error);
+    }
+  };
 
   return (
-    <InventoriesLayout title='Usuarios' searchText={searchText} onSearchChange={handleSearchChange} selectedCard={selectedCard} icon={<AccountCircle />}>
+    <InventoriesLayout title='Usuarios' searchText={searchText} onSearchChange={handleSearchChange} selectedCard={selectedCard} icon={<AccountCircle />} updateUsersList={updateUsersList}>
       <Grid container>
         <Grid container spacing={3} sx={{ padding: '10px', alignItems: 'center' }}>
           <Grid item xs={12} sm={12}>
@@ -215,19 +295,19 @@ export const UsersPage = () => {
                               open={Boolean(anchorEl)}
                               onClose={handleMenuClose}
                             >
-                              <ViewMenuItem onClick={handleMenuClose}>
+                              <ViewMenuItem onClick={handleViewClick}>
                                 <ListItemIcon>
                                   <VisibilityIcon color='blue' fontSize="small" />
                                 </ListItemIcon>
                                 Ver +
                               </ViewMenuItem>
-                              <DeleteMenuItem onClick={handleMenuClose}>
+                              <DeleteMenuItem onClick={handleDeleteClick}>
                                 <ListItemIcon>
                                   <DeleteIcon fontSize="small" />
                                 </ListItemIcon>
                                 Eliminar
                               </DeleteMenuItem>
-                              </CustomMenu>
+                            </CustomMenu>
                           </div>
                         </CardContent>
                       </Card>
@@ -238,6 +318,40 @@ export const UsersPage = () => {
           </Grid>
         </Grid>
       </Grid>
+
+      {/* Ventana emergente */}
+      <Dialog open={isPopupOpen} onClose={closePopup} maxWidth="sm" fullWidth>
+        <DialogTitle sx={{ fontWeight: 'bold', backgroundColor: '#0F4957', color: 'white' }}>{selectedPopupData?.complete_name}</DialogTitle>
+        <DialogContent sx={{ backgroundColor: '#CACACA', margin: 1, padding:2 }}>
+          <Grid container justifyContent='center' alignItems='center'>
+            <Grid item mr={10}>
+              {/* Agrega aquí la imagen del usuario */}
+              <Avatar alt="Avatar" src={selectedPopupData?.profileImage} sx={{ width: 200, height: 200 }} />
+            </Grid>
+            <Grid item xs={8} sm={5}>
+              {/* Agrega aquí el contenido de la tarjeta que deseas mostrar en la ventana emergente */}
+              <Typography paragraph>
+                <span style={{ fontWeight: 'bold' }}>Sucursal:</span> {selectedPopupData?.branch}
+              </Typography>
+              <Typography paragraph>
+                <span style={{ fontWeight: 'bold' }}>Horario laboral:</span> {selectedPopupData?.working_hours}
+              </Typography>
+              <Typography paragraph>
+                <span style={{ fontWeight: 'bold' }}>Fecha de nacimiento:</span> {selectedPopupData?.birthdate}
+              </Typography>
+              <Typography paragraph>
+                <span style={{ fontWeight: 'bold' }}>Edad:</span> {selectedPopupData?.age}
+              </Typography>
+              <Typography paragraph>
+                <span style={{ fontWeight: 'bold' }}>Sexo:</span> {selectedPopupData?.sex}
+              </Typography>
+              <Typography paragraph>
+                <span style={{ fontWeight: 'bold' }}>Descripción:</span> {selectedPopupData?.description}
+              </Typography>
+            </Grid>
+          </Grid>
+        </DialogContent>
+      </Dialog>
     </InventoriesLayout>
   )
 }

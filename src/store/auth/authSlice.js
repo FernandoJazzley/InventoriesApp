@@ -1,10 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const persistedState = JSON.parse(localStorage.getItem('reduxState'));
+
+
 export const authSlice = createSlice({
 
     name: 'auth',
     initialState: {
-        status: 'checking', // 'authenticated', 'not-authenticated'
+        status: 'not-authenticated', // 'authenticated', 'not-authenticated'
         user: {},
         errorMessage: null
     },
@@ -15,14 +18,17 @@ export const authSlice = createSlice({
             state.errorMessage = undefined; 
         },
         onLogin: (state, {payload}) => {
+            console.log(payload)
             state.status = 'authenticated';
             state.user = payload;
             state.errorMessage = undefined;
+            localStorage.setItem('reduxState', JSON.stringify(state));
         },
         onLogout: (state, {payload}) => {
             state.status = 'not-authenticated';
             state.user = {};
             state.errorMessage = payload;
+            localStorage.setItem('reduxState', JSON.stringify(state));
         },
         messageWelcome: ( state, {payload} ) => {
             state.status = 'welcome';

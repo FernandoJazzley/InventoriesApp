@@ -29,8 +29,9 @@ export const RecoveryPage = () => {
             text: errorMessage,
             icon: 'warning',
             iconColor: '#F07605',
-            background: '#E8E6DB',
-            confirmButtonColor: '#C5A366',
+            background: '#AAB7B8',
+            confirmButtonColor: 'green',
+            color: 'black',
             showClass: {
               popup: 'animate__animated animate__zoomIn'
             },
@@ -62,6 +63,7 @@ export const RecoveryPage = () => {
             <Grid container justifyContent="center" spacing={1} sx={{mb: -2, mt:3}}>
             <Grid item lg={7} md={8} sm={7} xs={9}>
                 <Button
+                type='submit'
                 variant="contained" 
                 color="primary"
                 fullWidth

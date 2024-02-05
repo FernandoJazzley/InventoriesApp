@@ -8,10 +8,11 @@ export const useAuthStore = () => {
     const { status, user, errorMessage } = useSelector( state => state.auth );
     const dispatch = useDispatch();
 
-    const startLogin = async( { email, password }) =>{
+    const startLogin = async( { email, password, sucursal }) =>{
         dispatch( onChecking () );
+        console.log(email, password, sucursal)
         try {
-            const { data } = await inventoriesApi.post('auth/login', {email, password});
+            const { data } = await inventoriesApi.post('auth/login', {email, password, sucursal});
             localStorage.setItem('token', data.token);
             localStorage.setItem('token-init-date', new Date().getTime());
             dispatch( messageWelcome({name:data.name}));
@@ -83,8 +84,9 @@ export const useAuthStore = () => {
                 position: 'center',
                 icon: 'success',
                 title: 'Usuario encontrado',
+                iconColor: '#59F02B',
+                background: '#AAB7B8',
                 text: `${data.msg}`,
-                background: '#E8E6DB',
                 showConfirmButton: false,
                 timer: 8000
             })
@@ -101,6 +103,7 @@ export const useAuthStore = () => {
 
     const startUpdatePassword = async ({id, password}) => {
         dispatch( onChecking());
+        console.log('pasa')
         try{
             const { data } = await inventoriesApi.put(`auth/updatePassword/:${id}`,{password});
             Swal.fire({
@@ -108,7 +111,10 @@ export const useAuthStore = () => {
                 icon: 'success',
                 title: 'Actualizado',
                 text: `${data.msg}`,
-                background: '#E8E6DB',
+                background: '#AAB7B8',
+                iconColor: '#59F02B',
+                confirmButtonColor: 'green',
+                color: 'black',
                 showConfirmButton: false,
                 timer: 8000
             }).then((result) => {
@@ -151,11 +157,16 @@ export const useAuthStore = () => {
             text: "¿Seguro que quieres cerrar tu sesión?",
             icon: 'question',
             showCancelButton: true,
-            background: '#E8E6DB',
-            confirmButtonColor: '#C5A366',
-            cancelButtonColor: '#d33',
+            iconColor: "#F05313",
+            background: '#AAB7B8',
+            confirmButtonColor: 'green',
+            color: 'black',
             confirmButtonText: 'Confirmar',
-            cancelButtonText: 'Cancelar'
+            cancelButtonColor: '#590F15',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                container: 'custom-swal-container', // Clase personalizada para ajustar el z-index
+              },
           }).then((result) => {
             if (result.isConfirmed) {
                 localStorage.clear();

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Button, FormControl, FormHelperText, Grid, IconButton, Input, InputAdornment, InputLabel, TextField, Typography } from "@mui/material"
 import { useAuthStore, useForm } from "../../hooks";
 import { Link as RouterLink, useLocation} from 'react-router-dom';
-import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import PasswordChecklist from "react-password-checklist"
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Swal from "sweetalert2";
@@ -68,8 +67,8 @@ export const ChangePassword = () => {
             text: errorMessage,
             icon: 'error',
             iconColor: '#F91101',
-            background: '#E8E6DB',
-            confirmButtonColor: '#C5A366',
+            background: '#AAB7B8',
+            confirmButtonColor: 'green',
             showClass: {
               popup: 'animate__animated animate__zoomIn'
             },
@@ -78,7 +77,7 @@ export const ChangePassword = () => {
             }
           }).then((result) => {
             if ( result.isConfirmed || result.isDismissed){
-                window.location.href = '/'
+                //window.location.href = '/'
             }
           });
         }
@@ -99,6 +98,7 @@ export const ChangePassword = () => {
 
   return (
     <AuthLayout title={title} to='/auth/recovery' link='none'>
+        <form onSubmit={ changueSubmit }>
         <Grid container>
         <Grid item xs={ 12 }>
         <FormControl 
@@ -200,6 +200,7 @@ export const ChangePassword = () => {
             </Grid>
 
         </Grid>
+        </form>
     </AuthLayout>
     )
 }

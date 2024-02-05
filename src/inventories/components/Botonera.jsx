@@ -2,8 +2,9 @@ import Divider from '@mui/material/Divider';
 import ListItemButton from '@mui/material/ListItemButton';
 import { AccountCircle, Business, ShoppingCart, ListAlt, People, Store } from '@mui/icons-material';
 import {Toolbar,Typography, List, ListItem, ListItemIcon, ListItemText, Button } from '@mui/material';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { useAuthStore } from '../../hooks';
 
 
 const StyledIconContainer = styled.div`
@@ -18,7 +19,7 @@ const StyledIconContainer = styled.div`
 
 export const Botonera = () => {
 
-    const navigate = useNavigate();
+  const { startLogout } = useAuthStore();
 
     const location = useLocation();
 
@@ -93,9 +94,7 @@ export const Botonera = () => {
                 color: 'white',             // Cambio de color del texto al pasar el ratón
                 },
               }}
-              onClick={
-                () => navigate('/auth/login')
-              }
+              onClick= {startLogout}
         >
           <Typography sx={{fontSize: 10}}>
             Cerrar sesión

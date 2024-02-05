@@ -10,19 +10,20 @@ import 'animate.css';
 const loginFormFields ={
   email: '',
   password: '',
+  sucursal: ''
 }
 
 const currencies = [
   {
-    value: 'USD',
+    value: 'Suc1',
     label: 'Sucursal 1',
   },
   {
-    value: 'EUR',
+    value: 'Suc',
     label: 'Sucursal 2',
   },
   {
-    value: 'BTC',
+    value: 'Suc3',
     label: 'Sucursal 3',
   },
 ];
@@ -31,6 +32,7 @@ const currencies = [
 export const LoginPage = () => {
 
   const { startLogin, errorMessage } = useAuthStore();
+  const [selectedSucursal, setSelectedSucursal] = useState('');
 
   const { 
      email, password, onInputChange:onLoginInputChange 
@@ -38,7 +40,7 @@ export const LoginPage = () => {
 
   const loginSubmit = ( event ) => {
     event.preventDefault();
-    startLogin({ email, password});
+    startLogin({ email, password, sucursal: selectedSucursal });
   } 
 
   const [showPassword, setShowPassword] = useState();
@@ -49,22 +51,21 @@ export const LoginPage = () => {
 
 
   useEffect(() => {
-    if ( errorMessage !== undefined && errorMessage !== null ){
-      
+    if ( errorMessage !== undefined && errorMessage !== null ){      
       Swal.fire({
         title: 'Error en la autenticación', 
         text: errorMessage,
         icon: 'error',
         iconColor: '#F91101',
-        background: '#E8E6DB',
-        confirmButtonColor: '#C5A366',
+        background: '#AAB7B8',
+        confirmButtonColor: 'green',
+        color: 'black',
         showClass: {
           popup: 'animate__animated animate__zoomIn'
         },
         hideClass: {
           popup: 'animate__animated animate__zoomOut'
         }
-      }).then((footer) => {
       });
     }
 
@@ -89,17 +90,19 @@ export const LoginPage = () => {
           </Grid>
 
           <Grid item xs={12} sx={{ mt: 1 }}>
-            <FormControl variant="standard" fullWidth>
-            
+          <FormControl variant="standard" fullWidth>
               <TextField
                 select
                 variant="standard"
                 label="Sucursal"
                 fullWidth
                 id="sucursal"
+                name="sucursal"
+                value={selectedSucursal}
+                onChange={(e) => setSelectedSucursal(e.target.value)}
                 InputLabelProps={{
-                  sx:{ fontWeight: 'bold', fontSize: {md: 16, xs: 14 }}}
-                }
+                  sx: { fontWeight: 'bold', fontSize: { md: 16, xs: 14 } },
+                }}
               >
                 {currencies.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -145,6 +148,7 @@ export const LoginPage = () => {
           <Grid container justifyContent="center" sx={{mb: -1, mt:5}}>
             <Grid item lg={7} md={8} sm={7} xs={8}>
                 <Button 
+                type='submit'
                 variant="contained" 
                 color="primary"
                 fullWidth

@@ -32,10 +32,6 @@ const size = {
   height: 200,
 };
 
-const CenteredContainer = styled('div')({
-  margin: 'auto',
-  textAlign: 'center',
-});
 
 const StyledText = styled('text')(({ theme }) => ({
   fill: theme.palette.text.primary,
@@ -55,11 +51,11 @@ function PieCenterLabel({ children }) {
 
 export const ReportsPage = () => {
   return (
-    <InventoriesLayout title='Reportes' icon={<ListAlt/>}>
+    <InventoriesLayout title='Reportes' display='none' icon={<ListAlt/>}>
        <Grid container>
-        <Grid container spacing={3} sx={{ padding: '10px', alignItems: 'center' }}>
+        <Grid container spacing={2} sx={{ padding: '10px', alignItems: 'center' }}>
           <Grid item xs={12} sm={12}>
-            <Scrollbars style={{ height: '76vh' }}>
+            <Scrollbars style={{ height: '76vh',overflowX: 'auto' }}>
             <Grid
                 container
                 direction="column"

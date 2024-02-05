@@ -6,11 +6,12 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { useNavigate } from "react-router-dom";
-
+import { useAuthStore } from '../../hooks';
 
 export const InventoriesPage = () => {
     
   const navigate = useNavigate();
+  const { startLogout } = useAuthStore();
 
   return (
     
@@ -255,10 +256,7 @@ export const InventoriesPage = () => {
                                     alignItems: 'center',
                                     justifyContent: 'center', 
                                 }}
-                                onClick={
-                                () => navigate('/auth/login')
-                            }
-                            >
+                                onClick= {startLogout}                            >
                             <Typography fontWeight='bold' variant='inherit'>
                             Cerrar sesión
                             </Typography>

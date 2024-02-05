@@ -72,12 +72,12 @@ const itemData = [
 
 export const ProductPage = () => {
   return (
-    <InventoriesLayout title='Productos' icon={<Store/>}>
-    <Grid container>
+    <InventoriesLayout title='Productos' display='none' icon={<Store />}>
+      <Grid container>
         <Grid container spacing={3} sx={{ padding: '10px', alignItems: 'center' }}>
           <Grid item xs={12} sm={12}>
             <Scrollbars style={{ height: '76vh' }}>
-            <Grid
+              <Grid
                 container
                 direction="column"
                 display='flex'
@@ -92,29 +92,37 @@ export const ProductPage = () => {
                   },
                 }}
               >
-                <ImageList sx={{ width: 500, height: 450 }}>
-                {itemData.map((item) => (
-                  <ImageListItem key={item.img}>
-                    <img
-                      srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                      src={`${item.img}?w=248&fit=crop&auto=format`}
-                      alt={item.title}
-                      loading="lazy"
-                    />
-                    <ImageListItemBar
-                      title={item.title}
-                      subtitle={<span>by: {item.author}</span>}
-                      position="below"
-                    />
-                  </ImageListItem>
-                ))}
-              </ImageList>
-             </Grid>
+                <ImageList
+                  sx={{
+                    width: '100%', // Abarcar el ancho del contenedor
+                    maxWidth: '1200px', // Limitar el ancho máximo si es necesario
+                    overflowX: 'auto', // Permitir desplazamiento horizontal en dispositivos pequeños
+                  }}
+                  gap={8} // Ajustar el espacio entre las imágenes
+                  cols={3} // Número deseado de imágenes por fila (puedes ajustar según tus necesidades)
+                >
+                  {itemData.map((item) => (
+                    <ImageListItem key={item.img}>
+                      <img
+                        srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                        src={`${item.img}?w=248&fit=crop&auto=format`}
+                        alt={item.title}
+                        loading="lazy"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} // Ajustar el tamaño de la imagen
+                      />
+                      <ImageListItemBar
+                        title={item.title}
+                        subtitle={<span>by: {item.author}</span>}
+                        position="below"
+                      />
+                    </ImageListItem>
+                  ))}
+                </ImageList>
+              </Grid>
             </Scrollbars>
           </Grid>
         </Grid>
       </Grid>
     </InventoriesLayout>
-  )
-}
-
+  );
+};
