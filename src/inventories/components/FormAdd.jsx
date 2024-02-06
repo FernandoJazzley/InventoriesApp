@@ -286,10 +286,12 @@ export const FormAdd = ({ open, handleClose , selectedUser, onUpdateData, update
                   variant='standard'
                   label="Correo electrónico"
                   type="email"
+                  edit
                   fullWidth
                   value={formData.email || ''}
                   name="email"
                   onChange={handleChange}
+                  disabled={selectedUser}
                 />
               </Grid>
               <Grid container mt={2}>
