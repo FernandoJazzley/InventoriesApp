@@ -44,6 +44,7 @@ export const FormAdd = ({ open, handleClose , selectedUser, onUpdateData, update
 
   const [formData, setFormData] = useState({
     complete_name: '',
+    email:'',
     age: '',
     sex: 'Hombre',
     birthdate: null,
@@ -104,6 +105,7 @@ export const FormAdd = ({ open, handleClose , selectedUser, onUpdateData, update
     if (selectedUser) {  
       setFormData({
         complete_name: selectedUser.complete_name || '',
+        email: selectedUser.email || '',
         age: selectedUser.age || '',
         sex: selectedUser.sex || '',
         birthdate: selectedUser.birthdate ? dayjs(selectedUser.birthdate) : null,
@@ -127,6 +129,7 @@ export const FormAdd = ({ open, handleClose , selectedUser, onUpdateData, update
     } else{
       setFormData({
         complete_name:'',
+        email: '',
         age:'',
         sex:'Hombre',
         birthdate: null,
@@ -144,6 +147,7 @@ export const FormAdd = ({ open, handleClose , selectedUser, onUpdateData, update
     let formDataToSend = new FormData();
     formDataToSend.append('profileImage', formData.profileImage);
     formDataToSend.append('complete_name', formData.complete_name);
+    formDataToSend.append('email', formData.email);
     formDataToSend.append('age', formData.age);
     formDataToSend.append('sex', formData.sex);
     formDataToSend.append('birthdate', formData.birthdate ? formData.birthdate.toISOString() : null);
@@ -272,6 +276,17 @@ export const FormAdd = ({ open, handleClose , selectedUser, onUpdateData, update
                   onChange={handleChange}
                 />
               </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant='standard'
+                  label="Correo electrónico"
+                  type="email"
+                  fullWidth
+                  value={formData.email || ''}
+                  name="email"
+                  onChange={handleChange}
+                />
+              </Grid>
               <Grid container mt={2}>
                 <Grid item xs={6}>
                   <TextField
@@ -319,7 +334,7 @@ export const FormAdd = ({ open, handleClose , selectedUser, onUpdateData, update
                   </LocalizationProvider>
                 </Grid>
               </Grid>
-              <Grid container mt={4} justifyContent={'space-between'}>
+              <Grid container mt={2} justifyContent={'space-between'}>
                 <Grid item xs={5.8}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">Sucursal</InputLabel>
@@ -357,7 +372,7 @@ export const FormAdd = ({ open, handleClose , selectedUser, onUpdateData, update
                   </FormControl>
                 </Grid>
               </Grid>
-              <Grid container mt={4}>
+              <Grid container mt={2}>
                 <Grid item xs={12}>
                   <TextField
                     variant='standard'
