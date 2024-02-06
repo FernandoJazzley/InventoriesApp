@@ -178,6 +178,7 @@ export const FormAdd = ({ open, handleClose , selectedUser, onUpdateData, update
             'Content-Type': 'multipart/form-data',
           },
         });
+        console.log(response)
         const title = ''
         const text= 'Usuario editado exitosamente.'
         const icon = 'succes'
@@ -198,6 +199,7 @@ export const FormAdd = ({ open, handleClose , selectedUser, onUpdateData, update
             'Content-Type': 'multipart/form-data',
           },
         });
+        console.log(response)
         //console.log('Respuesta del servidor:', response.data);
         handleClose();
         const title = ''
@@ -206,8 +208,11 @@ export const FormAdd = ({ open, handleClose , selectedUser, onUpdateData, update
         showAlert(title, text, icon);
         updateUsersList(); 
       } catch (error) {
+        const msg = error.response.data
+        console.log(error.response.data)
         const title = '¡Alerta!'
-        const text= 'Por favor, debe llenar todos los datos del formulario'
+        //const text= 'Por favor, debe llenar todos los datos del formulario'
+        const text = msg.msg
         const icon = 'warning'
         showAlert(title, text, icon); 
         console.error('Error al enviar la solicitud:', error);

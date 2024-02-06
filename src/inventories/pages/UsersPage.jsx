@@ -219,6 +219,7 @@ export const UsersPage = () => {
                   .filter(
                     (item) =>
                       item.complete_name.toLowerCase().includes(searchText.toLowerCase()) ||
+                      item.email.toLowerCase().includes(searchText.toLowerCase()) ||
                       item.branch.toLowerCase().includes(searchText.toLowerCase()) ||
                       item.birthdate.toLowerCase().includes(searchText.toLowerCase()) ||
                       item.working_hours.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -330,6 +331,9 @@ export const UsersPage = () => {
             </Grid>
             <Grid item xs={8} sm={5}>
               {/* Agrega aquí el contenido de la tarjeta que deseas mostrar en la ventana emergente */}
+              <Typography paragraph>
+                <span style={{ fontWeight: 'bold' }}>Correo:</span> {selectedPopupData?.email}
+              </Typography>
               <Typography paragraph>
                 <span style={{ fontWeight: 'bold' }}>Sucursal:</span> {selectedPopupData?.branch}
               </Typography>
